@@ -648,7 +648,7 @@ unsafeSqlBinOpComposite op sep a b = ERaw Parens $ compose (listify a) (listify 
     deconstruct :: (TLB.Builder, [PersistValue]) -> ([TLB.Builder], [PersistValue])
     deconstruct ("?", [PersistList vals]) = (replicate (length vals) "?", vals)
     deconstruct (b, []) = (TLB.fromLazyText <$> TL.splitOn "," (TLB.toLazyText b), [])
-    deconstruct x = err $ "cannot deconstruct " ++ show x ++ "."
+    deconstruct (b, c) = (["("<>b<>")"], c)
 
     compose f1 f2 info
       | not (null v1 || null v2) = err' "one side needs to have null placeholders"
